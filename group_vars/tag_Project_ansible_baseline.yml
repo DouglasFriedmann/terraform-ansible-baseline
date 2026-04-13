@@ -1,0 +1,15 @@
+ansible_connection: amazon.aws.aws_ssm
+ansible_user: ubuntu
+
+baseline_packages:
+  - curl
+  - git
+  - unzip
+  - vim
+  - ca-certificates
+  - apt-transport-https
+  - gnupg
+
+admin_user: devops
+
+nginx_demo_message: "Provisioned by Ansible on AWS"

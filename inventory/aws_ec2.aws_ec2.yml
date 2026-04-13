@@ -1,0 +1,23 @@
+plugin: amazon.aws.aws_ec2
+regions:
+  - us-east-1
+
+filters:
+  tag:Project: ansible-baseline
+  instance-state-name: running
+
+hostnames:
+  - private-ip-address
+  - ip-address
+
+compose:
+  ansible_host: private_ip_address
+
+keyed_groups:
+  - prefix: tag
+    key: ec2_tags
+  - prefix: aws_region
+    key: placement.region
+
+groups:
+  dev: "'dev' in (ec2_tags.Environment | default(''))"
