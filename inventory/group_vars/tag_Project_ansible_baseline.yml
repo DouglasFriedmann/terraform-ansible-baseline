@@ -15,3 +15,9 @@ baseline_packages:
 admin_user: devops
 
 nginx_demo_message: "Provisioned by Ansible on AWS"
+
+docker_packages:
+  - docker.io
+
+docker_users:
+  - devops
