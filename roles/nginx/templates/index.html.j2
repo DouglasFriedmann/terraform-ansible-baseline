@@ -3,8 +3,43 @@
 <head>
   <meta charset="utf-8">
   <title>Ansible Baseline</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 16px;
+      line-height: 1.6;
+    }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 24px;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
-  <h1>{{ nginx_demo_message }}</h1>
+  <div class="card">
+    <h1>{{ nginx_demo_message }}</h1>
+    <p>{{ nginx_demo_subtitle }}</p>
+
+    <h2>Host Details</h2>
+    <ul>
+      <li><strong>Hostname:</strong> {{ ansible_hostname }}</li>
+      <li><strong>Distribution:</strong> {{ ansible_distribution }} {{ ansible_distribution_version }}</li>
+      <li><strong>Kernel:</strong> {{ ansible_kernel }}</li>
+      <li><strong>Environment:</strong> {{ ec2_tags.Environment | default('unknown') }}</li>
+      <li><strong>Project:</strong> {{ ec2_tags.Project | default('unknown') }}</li>
+      <li><strong>Instance ID:</strong> {{ instance_id | default(inventory_hostname) }}</li>
+    </ul>
+
+    <p>This EC2 instance was provisioned with <code>Terraform</code> and configured with <code>Ansible</code> over <code>AWS Systems Manager Session Manager</code>.</p>
+  </div>
 </body>
-</html>
+</html>>

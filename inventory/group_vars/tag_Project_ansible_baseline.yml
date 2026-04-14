@@ -14,10 +14,14 @@ baseline_packages:
 
 admin_user: devops
 
-nginx_demo_message: "Provisioned by Ansible on AWS"
-
 docker_packages:
   - docker.io
 
 docker_users:
   - devops
+
+nginx_package: nginx
+nginx_listen_port: 80
+nginx_site_root: /var/www/html
+nginx_demo_message: "Provisioned by Ansible on AWS"
+nginx_demo_subtitle: "Terraform created the infrastructure. Ansible configured the host."

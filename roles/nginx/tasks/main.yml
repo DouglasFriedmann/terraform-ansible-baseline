@@ -1,2 +1,30 @@
 ---
-# nginx role to be added next
+- name: Install Nginx
+  ansible.builtin.apt:
+    name: "{{ nginx_package }}"
+    state: present
+    update_cache: true
+
+- name: Ensure Nginx service is enabled
+  ansible.builtin.service:
+    name: nginx
+    enabled: true
+
+- name: Ensure Nginx service is running
+  ansible.builtin.service:
+    name: nginx
+    state: started
+
+- name: Allow Nginx through UFW
+  community.general.ufw:
+    rule: allow
+    name: Nginx HTTP
+
+- name: Deploy demo index page
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: "{{ nginx_site_root }}/index.html"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart nginx
