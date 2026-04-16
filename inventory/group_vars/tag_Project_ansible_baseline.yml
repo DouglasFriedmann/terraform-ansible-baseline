@@ -25,3 +25,8 @@ nginx_listen_port: 80
 nginx_site_root: /var/www/html
 nginx_demo_message: "Provisioned by Ansible on AWS"
 nginx_demo_subtitle: "Terraform created the infrastructure. Ansible configured the host."
+
+cloudwatch_agent_package_url: "https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb"
+
+cloudwatch_log_group: "/aws/ec2/ansible-baseline"
+cloudwatch_region: "us-east-1"

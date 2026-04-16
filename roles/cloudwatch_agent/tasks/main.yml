@@ -1,2 +1,31 @@
 ---
-# cloudwatch agent role to be added next
+- name: Download CloudWatch agent package
+  ansible.builtin.get_url:
+    url: "{{ cloudwatch_agent_package_url }}"
+    dest: /tmp/amazon-cloudwatch-agent.deb
+    mode: "0644"
+
+- name: Install CloudWatch agent
+  ansible.builtin.apt:
+    deb: /tmp/amazon-cloudwatch-agent.deb
+
+- name: Create CloudWatch config directory
+  ansible.builtin.file:
+    path: /opt/aws/amazon-cloudwatch-agent/etc
+    state: directory
+    mode: "0755"
+
+- name: Deploy CloudWatch config
+  ansible.builtin.template:
+    src: amazon-cloudwatch-agent.json.j2
+    dest: /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+    mode: "0644"
+
+- name: Start CloudWatch agent
+  ansible.builtin.command: >
+    /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl
+    -a fetch-config
+    -m ec2
+    -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+    -s
+  changed_when: false
