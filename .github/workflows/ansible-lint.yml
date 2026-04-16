@@ -1,0 +1,50 @@
+name: Ansible Lint
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "ansible.cfg"
+      - "inventory/**"
+      - "playbooks/**"
+      - "roles/**"
+      - "requirements.yml"
+      - ".ansible-lint"
+      - ".github/workflows/ansible-lint.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "ansible.cfg"
+      - "inventory/**"
+      - "playbooks/**"
+      - "roles/**"
+      - "requirements.yml"
+      - ".ansible-lint"
+      - ".github/workflows/ansible-lint.yml"
+
+jobs:
+  ansible-lint:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install ansible-lint and Ansible
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible ansible-lint
+
+      - name: Install Ansible collections
+        run: ansible-galaxy collection install -r requirements.yml
+
+      - name: Run ansible-lint
+        run: ansible-lint
