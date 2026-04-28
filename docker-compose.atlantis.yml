@@ -1,0 +1,13 @@
+services:
+  atlantis:
+    image: ghcr.io/runatlantis/atlantis:latest
+    container_name: atlantis
+    ports:
+      - "4141:4141"
+    env_file:
+      - .env.atlantis
+    volumes:
+      - ~/.aws:/home/atlantis/.aws:ro
+      - ./terraform:/workspace/terraform
+    command:
+      - server
