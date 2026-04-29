@@ -32,3 +32,21 @@ variable "repo_allowlist" {
   type        = string
   default     = "github.com/DouglasFriedmann/terraform-ansible-baseline"
 }
+
+variable "datadog_api_key" {
+  description = "Datadog API key for Atlantis Terraform runs."
+  type        = string
+  sensitive   = true
+}
+
+variable "datadog_app_key" {
+  description = "Datadog application key for Atlantis Terraform runs."
+  type        = string
+  sensitive   = true
+}
+
+variable "datadog_site" {
+  description = "Datadog site for Atlantis Terraform runs."
+  type        = string
+  default     = "datadoghq.com"
+}

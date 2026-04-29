@@ -4,6 +4,12 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+variable "project" {
+  description = "Project name for tagging"
+  type        = string
+  default     = "terraform-ansible-baseline"
+}
+
 variable "project_name" {
   description = "Project tag value"
   type        = string

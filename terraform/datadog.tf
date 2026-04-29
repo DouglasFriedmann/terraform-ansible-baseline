@@ -18,8 +18,15 @@ variable "datadog_app_key" {
   default     = null
 }
 
+variable "datadog_site" {
+  description = "Datadog site."
+  type        = string
+  default     = "datadoghq.com"
+}
+
 provider "datadog" {
   api_key  = var.datadog_api_key
   app_key  = var.datadog_app_key
-  validate = false
+  api_url  = "https://api.${var.datadog_site}/"
+  validate = var.enable_datadog
 }
