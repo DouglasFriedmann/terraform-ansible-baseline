@@ -1,0 +1,10 @@
+.git
+.gitignore
+.env*
+*.tfstate
+*.tfstate.*
+terraform/.terraform
+node_modules
+__pycache__
+*.log
+docs

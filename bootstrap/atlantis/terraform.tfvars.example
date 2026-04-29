@@ -1,0 +1,4 @@
+github_user           = "DouglasFriedmann"
+github_token          = "ghp_REPLACE_ME"
+github_webhook_secret = "REPLACE_ME_WITH_SECRET"
+repo_allowlist        = "github.com/DouglasFriedmann/terraform-ansible-baseline"

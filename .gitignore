@@ -1,7 +1,6 @@
 .terraform/
 *.tfstate
 *.tfstate.*
-.terraform.lock.hcl
 terraform.tfvars
 .env
 *.retry
@@ -10,3 +9,7 @@ __pycache__/
 .vscode/
 .idea/
 *.deb
+.env.atlantis
+ngrok.log
+nohup.out
+EOF
