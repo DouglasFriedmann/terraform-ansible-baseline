@@ -73,3 +73,10 @@ resource "aws_iam_role_policy_attachment" "datadog_security_audit" {
   role       = aws_iam_role.datadog_integration[0].name
   policy_arn = "arn:aws:iam::aws:policy/SecurityAudit"
 }
+
+resource "aws_iam_role_policy_attachment" "datadog_cloudwatch_readonly" {
+  count = var.enable_datadog ? 1 : 0
+
+  role       = aws_iam_role.datadog_integration[0].name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
+}
