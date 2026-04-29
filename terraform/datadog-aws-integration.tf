@@ -1,29 +1,5 @@
 data "aws_caller_identity" "current" {}
 
-data "datadog_integration_aws_iam_permissions" "datadog_permissions" {
-  count = var.enable_datadog ? 1 : 0
-}
-
-locals {
-  datadog_iam_permissions = var.enable_datadog ? data.datadog_integration_aws_iam_permissions.datadog_permissions[0].iam_permissions : []
-}
-
-data "aws_iam_policy_document" "datadog_aws_integration" {
-  count = var.enable_datadog ? 1 : 0
-
-  statement {
-    actions   = local.datadog_iam_permissions
-    resources = ["*"]
-  }
-}
-
-resource "aws_iam_policy" "datadog_aws_integration" {
-  count = var.enable_datadog ? 1 : 0
-
-  name   = "DatadogAWSIntegrationPolicy"
-  policy = data.aws_iam_policy_document.datadog_aws_integration[0].json
-}
-
 resource "datadog_integration_aws_account" "this" {
   count = var.enable_datadog ? 1 : 0
 
@@ -89,13 +65,6 @@ resource "aws_iam_role" "datadog_integration" {
   tags = {
     Project = var.project
   }
-}
-
-resource "aws_iam_role_policy_attachment" "datadog_integration" {
-  count = var.enable_datadog ? 1 : 0
-
-  role       = aws_iam_role.datadog_integration[0].name
-  policy_arn = aws_iam_policy.datadog_aws_integration[0].arn
 }
 
 resource "aws_iam_role_policy_attachment" "datadog_security_audit" {
