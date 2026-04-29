@@ -80,3 +80,25 @@ resource "aws_iam_role_policy_attachment" "datadog_cloudwatch_readonly" {
   role       = aws_iam_role.datadog_integration[0].name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
 }
+
+resource "aws_iam_role_policy" "datadog_additional_permissions" {
+  count = var.enable_datadog ? 1 : 0
+
+  name = "DatadogAdditionalReadPermissions"
+  role = aws_iam_role.datadog_integration[0].id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "budgets:ViewBudget",
+          "ses:GetSendQuota",
+          "ses:GetSendStatistics"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
