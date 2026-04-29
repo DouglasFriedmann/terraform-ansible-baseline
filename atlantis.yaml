@@ -9,6 +9,3 @@ projects:
         - "*.tf"
         - "*.tfvars"
         - "../atlantis.yaml"
-    apply_requirements:
-      - approved
-      - mergeable
