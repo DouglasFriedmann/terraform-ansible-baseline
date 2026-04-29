@@ -151,6 +151,32 @@ resource "aws_secretsmanager_secret_version" "webhook_secret" {
   secret_string = var.github_webhook_secret
 }
 
+resource "aws_secretsmanager_secret" "datadog_api_key" {
+  name = "${local.name}/datadog-api-key"
+
+  tags = {
+    Project = local.name
+  }
+}
+
+resource "aws_secretsmanager_secret_version" "datadog_api_key" {
+  secret_id     = aws_secretsmanager_secret.datadog_api_key.id
+  secret_string = var.datadog_api_key
+}
+
+resource "aws_secretsmanager_secret" "datadog_app_key" {
+  name = "${local.name}/datadog-app-key"
+
+  tags = {
+    Project = local.name
+  }
+}
+
+resource "aws_secretsmanager_secret_version" "datadog_app_key" {
+  secret_id     = aws_secretsmanager_secret.datadog_app_key.id
+  secret_string = var.datadog_app_key
+}
+
 resource "aws_iam_role" "ecs_task_execution" {
   name = "${local.name}-ecs-task-execution-role"
 
@@ -191,7 +217,9 @@ resource "aws_iam_role_policy" "ecs_task_execution_secrets" {
         ]
         Resource = [
           aws_secretsmanager_secret.github_token.arn,
-          aws_secretsmanager_secret.webhook_secret.arn
+          aws_secretsmanager_secret.webhook_secret.arn,
+          aws_secretsmanager_secret.datadog_api_key.arn,
+          aws_secretsmanager_secret.datadog_app_key.arn
         ]
       }
     ]
@@ -313,6 +341,14 @@ resource "aws_ecs_task_definition" "atlantis" {
         {
           name  = "ATLANTIS_ATLANTIS_URL"
           value = "http://${aws_lb.atlantis.dns_name}"
+        },
+        {
+          name  = "TF_VAR_enable_datadog"
+          value = "true"
+        },
+        {
+          name  = "TF_VAR_datadog_site"
+          value = var.datadog_site
         }
       ]
 
@@ -324,6 +360,14 @@ resource "aws_ecs_task_definition" "atlantis" {
         {
           name      = "ATLANTIS_GH_WEBHOOK_SECRET"
           valueFrom = aws_secretsmanager_secret.webhook_secret.arn
+        },
+        {
+          name      = "TF_VAR_datadog_api_key"
+          valueFrom = aws_secretsmanager_secret.datadog_api_key.arn
+        },
+        {
+          name      = "TF_VAR_datadog_app_key"
+          valueFrom = aws_secretsmanager_secret.datadog_app_key.arn
         }
       ]
 
